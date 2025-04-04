@@ -15,35 +15,63 @@ function getHumanChoice() {
 
   const userChoice = prompt('Enter your choice: Rock, Paper or Scissors');
   const userChoiceFormatted = userChoice[0].toUpperCase() + userChoice.slice(1).toLowerCase();
-  
+
   return userChoiceFormatted;
 }
 
-let humanScore = 0;
-let computerScore = 0;
-
 function playRound(humanChoice, computerChoice) {
 
-  console.log(`You chose: ${humanChoice}`);
-  console.log(`Computer chose: ${computerChoice}`);
+  console.log(`> You: ${humanChoice}`);
+  console.log(`> Computer: ${computerChoice}`);
 
   if (humanChoice === computerChoice) {
     console.log('Tie!');
+    return 'tie';
 
   } else if ((humanChoice === 'Rock' && computerChoice === 'Scissors') 
     || (humanChoice === 'Paper' && computerChoice === 'Rock') 
     || (humanChoice === 'Scissors' && computerChoice === 'Paper')) {
 
-    humanScore++;
     console.log(`You Win! ${humanChoice} beats ${computerChoice}`);
+    return 'human';
 
   } else {
-    computerScore++;
     console.log(`You lose! ${computerChoice} beats ${humanChoice}`);
+    return 'computer';
   }
 }
 
-const humanSelection = getHumanChoice();
-const computerSelection = getComputerChoice();
+function playGame(rounds) {
 
-playRound(humanSelection, computerSelection);
+  let humanScore = 0;
+  let computerScore = 0;
+
+  for (let round = 0; round < rounds; round++) {
+
+    console.log(`(Round ${round + 1} / ${rounds})`);
+
+    const humanSelection = getHumanChoice();
+    const computerSelection = getComputerChoice();
+    const roundWinner = playRound(humanSelection, computerSelection);
+
+    if (roundWinner === 'human') {
+      humanScore++
+    }  else if (roundWinner === 'computer') {
+      computerScore++;
+    }
+
+    console.log(`Current Score - You: ${humanScore} | Computer: ${computerScore}`);
+  }
+
+  if (humanScore > computerScore) {
+    console.log(`You won the game!`);
+  } else if (computerScore > humanScore) {
+    console.log('You lost the game!');
+  } else {
+    console.log('You Tied!');
+  }
+
+  console.log(`Final Score - You: ${humanScore} | Computer: ${computerScore}`);
+}
+
+playGame(5);
